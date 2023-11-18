@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export AWS_CONTROL_PLANE_MACHINE_TYPE=t3.large
+export AWS_NODE_MACHINE_TYPE=t3.large
+export AWS_REGION=us-west-2
+export AWS_SSH_KEY_NAME=capi-eks
+

@@ -4,10 +4,13 @@ metadata:
   name: capi-eks
   namespace: default
 spec:
-  clusterNetwork:
-    pods:
-      cidrBlocks:
-      - 192.168.0.0/16
+  network:
+    vpc:
+      id: vpc-00626aca87820438a
+    subnets:
+      id: subnet-03ab5be45da8e7cb2
+      id: subnet-0e94caaaaa25fba3e
+      id: subnet-0d0c61e75cc1f1c08
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1beta2
     kind: AWSManagedControlPlane
@@ -32,7 +35,7 @@ metadata:
 spec:
   region: us-west-2
   sshKeyName: capi-eks
-  version: v1.22.6
+  version: v1.28.0
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
