@@ -9,21 +9,28 @@ spec:
       cidrBlocks:
       - 192.168.0.0/16
   controlPlaneRef:
-    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta2
     kind: AWSManagedControlPlane
     name: capi-eks-control-plane
   infrastructureRef:
-    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
-    kind: AWSManagedControlPlane
-    name: capi-eks-control-plane
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+    kind: AWSManagedCluster
+    name: capi-eks
 ---
-apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSManagedCluster
+metadata:
+  name: capi-eks
+  namespace: default
+spec: {}
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta2
 kind: AWSManagedControlPlane
 metadata:
   name: capi-eks-control-plane
   namespace: default
 spec:
-  region: ap-southeast-2
+  region: us-west-2
   sshKeyName: capi-eks
   version: v1.22.6
 ---
@@ -41,11 +48,11 @@ spec:
         dataSecretName: ""
       clusterName: capi-eks
       infrastructureRef:
-        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
         kind: AWSManagedMachinePool
         name: capi-eks-pool-0
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: AWSManagedMachinePool
 metadata:
   name: capi-eks-pool-0
