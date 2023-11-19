@@ -4,13 +4,10 @@ metadata:
   name: capi-eks
   namespace: default
 spec:
-  network:
-    vpc:
-      id: vpc-00626aca87820438a
-    subnets:
-      id: subnet-03ab5be45da8e7cb2
-      id: subnet-0e94caaaaa25fba3e
-      id: subnet-0d0c61e75cc1f1c08
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1beta2
     kind: AWSManagedControlPlane
@@ -33,8 +30,22 @@ metadata:
   name: capi-eks-control-plane
   namespace: default
 spec:
+  network:
+    vpc:
+      id: vpc-00626aca87820438a
+    subnets:
+      - id: subnet-03ab5be45da8e7cb2
+      - id: subnet-0e94caaaaa25fba3e
+      - id: subnet-0d0c61e75cc1f1c08
+  addons:
+  - conflictResolution: overwrite
+    name: vpc-cni
+    version: v1.7.5-eksbuild.1
   region: us-west-2
   sshKeyName: capi-eks
+  endpointAccess:
+    public: false
+    private: true
   version: v1.28.0
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
@@ -44,7 +55,7 @@ metadata:
   namespace: default
 spec:
   clusterName: capi-eks
-  replicas: 2
+  replicas: 0
   template:
     spec:
       bootstrap:

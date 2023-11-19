@@ -1,0 +1,72 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: capi-mgmt
+  namespace: default
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    kind: AWSManagedControlPlane
+    name: capi-mgmt-control-plane
+  infrastructureRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    kind: AWSManagedControlPlane
+    name: capi-mgmt-control-plane
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+kind: AWSManagedControlPlane
+metadata:
+  name: capi-mgmt-control-plane
+  namespace: default
+spec:
+  network:
+    vpc:
+      id: vpc-00626aca87820438a
+    subnets:
+    - id: subnet-03ab5be45da8e7cb2
+    - id: subnet-0e94caaaaa25fba3e
+    - id: subnet-0d0c61e75cc1f1c08
+  endpointAccess:
+    public: false
+    private: true
+  addons:
+  - conflictResolution: overwrite
+    name: vpc-cni
+    version: v1.10.1-eksbuild.1
+  - conflictResolution: overwrite
+    name: coredns
+    version: v1.8.4-eksbuild.1
+  - conflictResolution: overwrite
+    name: kube-proxy
+    version: v1.21.2-eksbuild.2
+  region: us-west-2
+  sshKeyName: default
+  version: v1.21.2
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachinePool
+metadata:
+  name: capi-mgmt-pool-0
+  namespace: default
+spec:
+  clusterName: capi-mgmt
+  replicas: 3
+  template:
+    spec:
+      bootstrap:
+        dataSecretName: ""
+      clusterName: capi-mgmt
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+        kind: AWSManagedMachinePool
+        name: capi-mgmt-pool-0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: AWSManagedMachinePool
+metadata:
+  name: capi-mgmt-pool-0
+  namespace: default
