@@ -37,16 +37,21 @@ spec:
       - id: subnet-03ab5be45da8e7cb2
       - id: subnet-0e94caaaaa25fba3e
       - id: subnet-0d0c61e75cc1f1c08
-  addons:
-  - conflictResolution: overwrite
-    name: vpc-cni
-    version: v1.7.5-eksbuild.1
   region: us-west-2
   sshKeyName: capi-eks
+  roleName: controllers.cluster-api-provider-aws.sigs.k8s.io
   endpointAccess:
     public: false
     private: true
   version: v1.28.0
+---
+kind: Secret
+apiVersion: v1
+type: Opaque
+data:
+  value: IyEvYmluL2Jhc2gKCmVjaG8gInRlc3QiCg==
+metadata:
+  name: eks-bootstrap
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
@@ -55,20 +60,25 @@ metadata:
   namespace: default
 spec:
   clusterName: capi-eks
-  replicas: 0
+  replicas: 3
   template:
     spec:
       bootstrap:
-        dataSecretName: ""
+        dataSecretName: "eks-bootstrap"
       clusterName: capi-eks
+      version: v1.28.0
       infrastructureRef:
-        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
-        kind: AWSManagedMachinePool
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+        kind: AWSMachinePool
         name: capi-eks-pool-0
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
-kind: AWSManagedMachinePool
+kind: AWSMachinePool
 metadata:
   name: capi-eks-pool-0
-  namespace: default
-spec: {}
+spec:
+  minSize: 1
+  maxSize: 10
+  awsLaunchTemplate:
+    iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
+    instanceType: t3.medium
