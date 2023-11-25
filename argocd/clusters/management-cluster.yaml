@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: eks-cluster
+  name: eks-mangement
 spec:
   destination:
-    name: ''
+    name: eks-mangement
     namespace: 'default'
     server: 'https://kubernetes.default.svc'
   source:
-    path: 'capi-cluster/aws-eks'
+    path: 'clusters/management/'
     repoURL: https://github.com/rohitasva/eks-ec2-clusterapi-gitops
     targetRevision: HEAD
     #helm:

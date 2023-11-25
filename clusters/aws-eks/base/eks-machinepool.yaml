@@ -40,7 +40,7 @@ spec:
   sshKeyName: capi-eks
   roleName: eks-controlplane.cluster-api-provider-aws.sigs.k8s.io
   endpointAccess:
-    public: false
+    public: true
     private: true
   addons:
   - conflictResolution: overwrite
@@ -54,9 +54,9 @@ kind: Secret
 apiVersion: v1
 type: Opaque
 data:
-  value: IyEvYmluL2Jhc2ggLXhlCi9ldGMvZWtzL2Jvb3RzdHJhcC5zaCBkZWZhdWx0X2NhcGktZWtzLWNvbnRyb2wtcGxhbmUK
+  value: IyEvYmluL2Jhc2ggLXhlCi9ldGMvZWtzL2Jvb3RzdHJhcC5zaCBkZWZhdWx0XyR7Q0xVU1RFUl9OQU1FfS1jb250cm9sLXBsYW5lCg==
 metadata:
-  name: eks-bootstrap
+  name: capi-eks-bootstrap
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachinePool
@@ -69,7 +69,7 @@ spec:
   template:
     spec:
       bootstrap:
-        dataSecretName: "eks-bootstrap"
+        dataSecretName: "capi-eks-bootstrap"
       clusterName: capi-eks
       version: v1.28.0
       infrastructureRef:
@@ -88,10 +88,3 @@ spec:
     iamInstanceProfile: eks-worker-node-custom
     instanceType: t3.medium
     sshKeyName: capi-eks
----
-apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
-kind: EKSConfig
-metadata:
-  name: capi-eks-mp-0
-  namespace: default
-spec: {}
