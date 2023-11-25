@@ -1,0 +1,2 @@
+#!/bin/bash -xe
+/etc/eks/bootstrap.sh default_capi-eks-control-plane

@@ -1,2 +1,4 @@
 *.pem
 *.swp
+*.kubeconfig
+

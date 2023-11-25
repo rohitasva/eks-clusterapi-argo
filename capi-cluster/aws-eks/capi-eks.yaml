@@ -22,7 +22,6 @@ kind: AWSManagedCluster
 metadata:
   name: capi-eks
   namespace: default
-spec: {}
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1beta2
 kind: AWSManagedControlPlane
@@ -39,17 +38,23 @@ spec:
       - id: subnet-0d0c61e75cc1f1c08
   region: us-west-2
   sshKeyName: capi-eks
-  roleName: controllers.cluster-api-provider-aws.sigs.k8s.io
+  roleName: eks-controlplane.cluster-api-provider-aws.sigs.k8s.io
   endpointAccess:
     public: false
     private: true
+  addons:
+  - conflictResolution: overwrite
+    name: vpc-cni
+    version: v1.15.3-eksbuild.1
+  additionalTags:
+    "adsk:moniker": plangrid-C-uw2
   version: v1.28.0
 ---
 kind: Secret
 apiVersion: v1
 type: Opaque
 data:
-  value: IyEvYmluL2Jhc2gKCmVjaG8gInRlc3QiCg==
+  value: IyEvYmluL2Jhc2ggLXhlCi9ldGMvZWtzL2Jvb3RzdHJhcC5zaCBkZWZhdWx0X2NhcGktZWtzLWNvbnRyb2wtcGxhbmUK
 metadata:
   name: eks-bootstrap
 ---
@@ -64,33 +69,25 @@ spec:
   template:
     spec:
       bootstrap:
-        configRef:
-          apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
-          kind: EKSConfig
-          name: capi-eks-mp-0
         dataSecretName: "eks-bootstrap"
       clusterName: capi-eks
       version: v1.28.0
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
         kind: AWSMachinePool
-        name: capi-eks-pool-0
+        name: capi-eks-launch-template-0
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: AWSMachinePool
 metadata:
-  name: capi-eks-pool-0
+  name: capi-eks-launch-template-0
 spec:
-  minSize: 1
+  minSize: 2
   maxSize: 10
   awsLaunchTemplate:
-    iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
+    iamInstanceProfile: eks-worker-node-custom
     instanceType: t3.medium
     sshKeyName: capi-eks
-  subnets:
-    - id: subnet-03ab5be45da8e7cb2
-    - id: subnet-0e94caaaaa25fba3e
-    - id: subnet-0d0c61e75cc1f1c08
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
 kind: EKSConfig
