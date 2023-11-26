@@ -1,7 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: eks-mangement
+  name: argocd
+  namespace: argocd
 spec:
   destination:
     name: eks-mangement
@@ -17,4 +18,5 @@ spec:
   project: default
   syncPolicy:
     automated:
+      selfHeal: true
       prune: true

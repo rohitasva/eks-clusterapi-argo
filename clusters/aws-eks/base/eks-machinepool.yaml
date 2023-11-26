@@ -31,11 +31,8 @@ metadata:
 spec:
   network:
     vpc:
-      id: vpc-00626aca87820438a
-    subnets:
-      - id: subnet-03ab5be45da8e7cb2
-      - id: subnet-0e94caaaaa25fba3e
-      - id: subnet-0d0c61e75cc1f1c08
+      id: ${VPC_ID}
+    subnets: []
   region: us-west-2
   sshKeyName: capi-eks
   roleName: eks-controlplane.cluster-api-provider-aws.sigs.k8s.io
