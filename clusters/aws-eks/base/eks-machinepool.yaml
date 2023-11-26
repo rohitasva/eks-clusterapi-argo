@@ -30,8 +30,7 @@ metadata:
   namespace: default
 spec:
   network:
-    vpc:
-      id: ${VPC_ID}
+    vpc: null
     subnets: []
   region: us-west-2
   sshKeyName: capi-eks
@@ -51,7 +50,7 @@ kind: Secret
 apiVersion: v1
 type: Opaque
 data:
-  value: IyEvYmluL2Jhc2ggLXhlCi9ldGMvZWtzL2Jvb3RzdHJhcC5zaCBkZWZhdWx0XyR7Q0xVU1RFUl9OQU1FfS1jb250cm9sLXBsYW5lCg==
+  value: IyEvYmluL2Jhc2ggLXhlCi9ldGMvZWtzL2Jvb3RzdHJhcC5zaCBkZWZhdWx0X2NhcGktZWtzLWNvbnRyb2wtcGxhbmUK
 metadata:
   name: capi-eks-bootstrap
 ---

@@ -5,11 +5,11 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    name: eks-mangement
+    name: us-west-2-management
     namespace: 'default'
     server: 'https://kubernetes.default.svc'
   source:
-    path: 'clusters/management/'
+    path: 'clusters/aws-eks/overlays/us-west-2-management'
     repoURL: https://github.com/rohitasva/eks-ec2-clusterapi-gitops
     targetRevision: HEAD
     #helm:

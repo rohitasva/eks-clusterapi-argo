@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      kind: AWSManagedControlPlane
+    patch: |
+      - op: add
+        path: /spec/network/vpc
+        value:
+          id: vpc-00626aca87820438a
+      - op: add
+        path: /spec/network/subnets
+        value:
+          - id: subnet-03ab5be45da8e7cb2
+          - id: subnet-0e94caaaaa25fba3e
+          - id: subnet-0d0c61e75cc1f1c08
+
+
+
