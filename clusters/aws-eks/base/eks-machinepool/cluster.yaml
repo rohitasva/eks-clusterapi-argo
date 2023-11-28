@@ -32,7 +32,7 @@ spec:
   network:
     vpc: null
     subnets: []
-  region: us-west-2
+  region: null
   sshKeyName: capi-eks
   roleName: eks-controlplane.cluster-api-provider-aws.sigs.k8s.io
   endpointAccess:
@@ -43,5 +43,5 @@ spec:
     name: vpc-cni
     version: v1.15.3-eksbuild.1
   additionalTags:
-    "adsk:moniker": plangrid-C-uw2
+    adsk:moniker: null
   version: ${KUBERNETES_VERSION}

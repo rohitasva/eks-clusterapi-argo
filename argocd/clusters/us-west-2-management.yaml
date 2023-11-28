@@ -1,16 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: us-west-2-management
   namespace: argocd
 spec:
   destination:
-    name: us-west-2-management
     namespace: 'default'
     server: 'https://kubernetes.default.svc'
   source:
     path: 'clusters/aws-eks/overlays/us-west-2-management'
-    repoURL: https://github.com/rohitasva/eks-ec2-clusterapi-gitops
+    repoURL: https://github.com/rohitasva/eks-clusterapi-argo
     targetRevision: HEAD
     #helm:
      # valueFiles:

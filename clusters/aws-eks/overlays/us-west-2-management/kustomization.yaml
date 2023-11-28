@@ -36,6 +36,9 @@ patches:
         path: /spec/version
         value: v1.28.0
       - op: add
+        path: /spec/region
+        value: us-west-2
+      - op: add
         path: /spec/network/vpc
         value:
           id: vpc-00626aca87820438a
@@ -48,6 +51,9 @@ patches:
       - op: replace
         path: /metadata/name
         value: us-west-2-management-control-plane
+      - op: add
+        path: /spec/additionalTags/adsk:moniker
+        value: plangrid-C-uw2
   - target:
       kind: MachinePool
     patch: |
