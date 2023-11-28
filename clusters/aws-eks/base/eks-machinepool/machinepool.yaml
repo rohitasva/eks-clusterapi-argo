@@ -1,0 +1,30 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachinePool
+metadata:
+  name: ${CLUSTER_NAME}-pool-0
+  namespace: default
+spec:
+  clusterName: ${CLUSTER_NAME}
+  replicas: 3
+  template:
+    spec:
+      bootstrap:
+        dataSecretName: "capi-eks-bootstrap"
+      clusterName: ${CLUSTER_NAME}
+      version: ${KUBERNETES_VERSION}
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        kind: AWSMachinePool
+        name: ${CLUSTER_NAME}-launch-template-0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSMachinePool
+metadata:
+  name: ${CLUSTER_NAME}-launch-template-0
+spec:
+  minSize: 2
+  maxSize: 10
+  awsLaunchTemplate:
+    iamInstanceProfile: eks-worker-node-custom
+    instanceType: t3.medium
+    sshKeyName: capi-eks

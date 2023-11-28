@@ -2,12 +2,39 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../base
+  - ../../base/eks-machinepool
 
 patches:
   - target:
+      kind: Secret
+    patch: |
+      - op: replace
+        path: /data/value
+        value: IyEvYmluL2Jhc2ggLXhlCi9ldGMvZWtzL2Jvb3RzdHJhcC5zaCBkZWZhdWx0X3VzLXdlc3QtMi1tYW5hZ2VtZW50LWNvbnRyb2wtcGxhbmUK
+  - target:
+      kind: Cluster
+    patch: |
+      - op: replace
+        path: /metadata/name
+        value: us-west-2-management
+      - op: replace
+        path: /spec/controlPlaneRef/name
+        value: us-west-2-management-control-plane
+      - op: replace
+        path: /spec/infrastructureRef/name
+        value: us-west-2-management
+  - target:
+      kind: AWSManagedCluster
+    patch: |
+      - op: replace
+        path: /metadata/name
+        value: us-west-2-management
+  - target:
       kind: AWSManagedControlPlane
     patch: |
+      - op: replace
+        path: /spec/version
+        value: v1.28.0
       - op: add
         path: /spec/network/vpc
         value:
@@ -18,6 +45,34 @@ patches:
           - id: subnet-03ab5be45da8e7cb2
           - id: subnet-0e94caaaaa25fba3e
           - id: subnet-0d0c61e75cc1f1c08
+      - op: replace
+        path: /metadata/name
+        value: us-west-2-management-control-plane
+  - target:
+      kind: MachinePool
+    patch: |
+      - op: replace
+        path: /metadata/name
+        value: us-west-2-management-pool-0
+      - op: replace
+        path: /spec/clusterName
+        value: us-west-2-management
+      - op: replace
+        path: /spec/template/spec/clusterName
+        value: us-west-2-management
+      - op: replace
+        path: /spec/template/spec/infrastructureRef/name
+        value: us-west-2-management-launch-template-0
+      - op: replace
+        path: /spec/template/spec/version
+        value: v1.28.0
+  - target:
+      kind: AWSMachinePool
+    patch: |
+      - op: replace
+        path: /metadata/name
+        value: us-west-2-management-launch-template-0
+
 
 
 

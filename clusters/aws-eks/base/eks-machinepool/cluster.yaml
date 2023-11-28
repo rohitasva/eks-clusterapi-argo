@@ -1,0 +1,47 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: ${CLUSTER_NAME}
+  namespace: default
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+    kind: AWSManagedControlPlane
+    name: ${CLUSTER_NAME}-control-plane
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+    kind: AWSManagedCluster
+    name: ${CLUSTER_NAME}
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSManagedCluster
+metadata:
+  name: ${CLUSTER_NAME}
+  namespace: default
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+kind: AWSManagedControlPlane
+metadata:
+  name: ${CLUSTER_NAME}-control-plane
+  namespace: default
+spec:
+  network:
+    vpc: null
+    subnets: []
+  region: us-west-2
+  sshKeyName: capi-eks
+  roleName: eks-controlplane.cluster-api-provider-aws.sigs.k8s.io
+  endpointAccess:
+    public: true
+    private: true
+  addons:
+  - conflictResolution: overwrite
+    name: vpc-cni
+    version: v1.15.3-eksbuild.1
+  additionalTags:
+    "adsk:moniker": plangrid-C-uw2
+  version: ${KUBERNETES_VERSION}
