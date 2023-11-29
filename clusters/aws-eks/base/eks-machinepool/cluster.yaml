@@ -42,9 +42,6 @@ spec:
   - conflictResolution: overwrite
     name: vpc-cni
     version: v1.15.3-eksbuild.1
-  - conflictResolution: overwrite
-    name: aws-ebs-csi-driver
-    version: v1.11.2-eksbuild.1
   additionalTags:
     adsk:moniker: null
   version: ${KUBERNETES_VERSION}
