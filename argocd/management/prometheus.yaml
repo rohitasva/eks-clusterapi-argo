@@ -1,14 +1,22 @@
-project: default
-source:
-  repoURL: 'https://prometheus-community.github.io/helm-charts'
-  targetRevision: 25.8.0
-  chart: prometheus
-destination:
-  namespace: prometheus
-  name: >-
-    arn:aws:eks:us-west-2:663445957666:cluster/default_us-west-2-management-control-plane
-syncPolicy:
-  automated: {}
-  synchOptions:
-    - CreateNamespace=true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  destination:
+    namespace: prometheus
+    name: >-
+      arn:aws:eks:us-west-2:663445957666:cluster/default_us-west-2-management-control-plane
+  source:
+    repoURL: 'https://prometheus-community.github.io/helm-charts'
+    targetRevision: 25.8.0
+    chart: prometheus
+  project: default
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
 
