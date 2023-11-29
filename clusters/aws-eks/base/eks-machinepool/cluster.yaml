@@ -38,6 +38,7 @@ spec:
   endpointAccess:
     public: true
     private: true
+  associateOIDCProvider: true
   addons:
   - conflictResolution: overwrite
     name: vpc-cni
