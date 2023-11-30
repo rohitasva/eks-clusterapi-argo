@@ -21,6 +21,7 @@ apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: AWSMachinePool
 metadata:
   name: ${CLUSTER_NAME}-launch-template-0
+  namespace: default
 spec:
   minSize: 2
   maxSize: 10

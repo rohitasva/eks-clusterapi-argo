@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubecost
+  namespace: argocd
+spec:
+  destination:
+    namespace: kubecost
+    name: >-
+      arn:aws:eks:us-west-2:663445957666:cluster/default_us-west-2-management-control-plane
+  source:
+    repoURL: 'https://kubecost.github.io/cost-analyzer'
+    targetRevision: 1.107.1
+    helm:
+      parameters:
+        - name: kubecostToken
+          value: cm9oaXRhc3ZhQGdtYWlsLmNvbQ==xm343yadf98
+    chart: cost-analyzer
+  project: default
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+

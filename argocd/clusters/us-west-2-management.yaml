@@ -5,15 +5,12 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: 'default'
+    namespace: default
     server: 'https://kubernetes.default.svc'
   source:
     path: 'clusters/aws-eks/overlays/us-west-2-management'
     repoURL: https://github.com/rohitasva/eks-clusterapi-argo
     targetRevision: HEAD
-    #helm:
-     # valueFiles:
-       # - values-c1.yaml
   project: default
   syncPolicy:
     automated:
