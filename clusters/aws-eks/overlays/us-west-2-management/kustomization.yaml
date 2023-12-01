@@ -33,6 +33,9 @@ patches:
       kind: AWSManagedControlPlane
     patch: |
       - op: replace
+        path: /spec/encryptionConfig/provider
+        value: arn:aws:kms:us-west-2:663445957666:key/45967086-286d-49f5-b34d-34be6f45d244
+      - op: replace
         path: /spec/version
         value: v1.28.0
       - op: add

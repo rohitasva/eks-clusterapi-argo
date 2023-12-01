@@ -29,6 +29,10 @@ metadata:
   name: ${CLUSTER_NAME}-control-plane
   namespace: default
 spec:
+  encryptionConfig:
+    provider: null
+    resources:
+    - "secrets"
   network:
     vpc: null
     subnets: []
